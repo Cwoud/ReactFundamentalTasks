@@ -1,13 +1,13 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { mockedAuthorsList } from '../../../constants'
 import { formatCreationDate } from '../../../helpers/formatCreationDate'
 import { getCourseDuration } from '../../../helpers/getCourseDuration'
-import { CourseInfo } from '../../interface'
+import { CourseDetails } from '../../interface'
 import {
   ButtonWrapper,
   CourseContainer,
   DescriptionWrapper,
-  InfoWrapper,
   LeftContainer,
   RightContainer,
   SectionTitle,
@@ -16,12 +16,13 @@ import {
 } from './styled-components'
 
 type CourseCardProps = {
-  courseInfo: CourseInfo
+  courseInfo: CourseDetails
+  onSelectCourse: (id: string) => void
 }
 function CourseCard(props: CourseCardProps) {
   const { id, title, description, duration, authors, creationDate } =
     props.courseInfo
-
+  const { onSelectCourse, courseInfo } = props
   const authorsArr = authors.map((author) =>
     mockedAuthorsList
       .filter((authorInfo) => authorInfo.id === author)
@@ -55,11 +56,15 @@ function CourseCard(props: CourseCardProps) {
             {formatCreationDate(creationDate)}
           </div>
           <ButtonWrapper>
-            <StartCourseButton
-              buttonName={'Show course'}
-              onButtonClick={() => {}}
-              type={'button'}
-            />
+            <Link to={`/courses/${id}`}>
+              <StartCourseButton
+                buttonName={'Show course'}
+                onButtonClick={() => {
+                  onSelectCourse(id)
+                }}
+                type={'button'}
+              />
+            </Link>
           </ButtonWrapper>
         </RightContainer>
       </CourseContainer>

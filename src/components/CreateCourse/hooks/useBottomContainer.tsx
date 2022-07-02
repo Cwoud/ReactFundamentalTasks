@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '../../../common/Button'
 import Input from '../../../common/Input'
 import { mockedAuthorsList } from '../../../constants'
@@ -45,6 +45,7 @@ function useBottomContainer() {
         return author
       }
     })
+
     const newAuthorList = authorList.filter((author) => {
       if (author.id !== id) {
         return author
@@ -86,6 +87,7 @@ function useBottomContainer() {
           <label>{'Author name'}</label>
         </div>
         <Input
+          inputName={'addAuthor'}
           onValueChange={onAuthorNameChange}
           placeholderText={'Enter author name...'}
         />
@@ -106,6 +108,7 @@ function useBottomContainer() {
           <label>{'Duration'}</label>
         </div>
         <Input
+          inputName={'duration'}
           onValueChange={onDurationChange}
           placeholderText={'Enter duration in minutes...'}
         />
@@ -143,15 +146,17 @@ function useBottomContainer() {
     )
   }
 
+  useEffect(() => {}, [courseAuthor])
+
   return {
     authorName,
     duration,
+    courseAuthor,
     renderAddAuthor,
     renderDuration,
     renderAuthorsAvailable,
     getAuthorsList,
     renderAuthorsList,
-    courseAuthor,
   }
 }
 

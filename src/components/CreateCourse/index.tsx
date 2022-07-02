@@ -4,13 +4,15 @@ import useUpperContainer from './hooks/useUpperContainer'
 import useBottomContainer from './hooks/useBottomContainer'
 import { v4 as uuidv4 } from 'uuid'
 import dayjs from 'dayjs'
-import { CourseInfo } from '../interface'
+import { CourseDetails } from '../interface'
+import { useHistory } from 'react-router'
 
 type CreateCourseProps = {
-  onAddCourse: (course: CourseInfo) => void
+  onAddCourse: (course: CourseDetails) => void
 }
 function CreateCourse(props: CreateCourseProps) {
   const { onAddCourse } = props
+  const history = useHistory()
   const { title, description, renderTitle, renderDescription } =
     useUpperContainer()
   const {
@@ -21,7 +23,7 @@ function CreateCourse(props: CreateCourseProps) {
     renderAuthorsAvailable,
     renderAuthorsList,
   } = useBottomContainer()
-
+  console.log({ courseAuthor })
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (
@@ -32,10 +34,9 @@ function CreateCourse(props: CreateCourseProps) {
     ) {
       alert('Please fill in all fields!')
     } else {
-      console.log('oi')
       const date = dayjs().format('DD/MM/YYYY')
       const authors = courseAuthor.map((author) => author.id)
-      const newCourse: CourseInfo = {
+      const newCourse: CourseDetails = {
         id: uuidv4(),
         title: title,
         description: description,
@@ -43,8 +44,8 @@ function CreateCourse(props: CreateCourseProps) {
         duration: duration,
         authors: authors,
       }
-      console.log(newCourse)
       onAddCourse(newCourse)
+      history.goBack()
     }
   }
 

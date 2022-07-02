@@ -16,6 +16,7 @@ function SearchBar(props: SearchBarProps) {
       <Input
         placeholderText={'Enter course name...'}
         onValueChange={onSearchValueChange}
+        inputName={'enterCourse'}
       />
       <Button buttonName={'Search'} onButtonClick={onSearch} type={'button'} />
 
