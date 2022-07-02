@@ -1,26 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react'
+import Courses from './components/Courses'
+import CreateCourse from './components/CreateCourse'
+import Header from './components/Header'
+import { CourseInfo } from './components/interface'
+import { mockedCoursesList } from './constants'
 
 function App() {
+  const [courseList, setCourseList] = useState(mockedCoursesList)
+  const [isCreateCourse, setIsCreateCourse] = useState(false)
+
+  const addNewCourse = (newCourse: CourseInfo) => {
+    setCourseList([...courseList, newCourse])
+    setIsCreateCourse(false)
+  }
+  useEffect(() => {}, [isCreateCourse, courseList])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <Header username={'Xinyun'} />
+
+      {isCreateCourse ? (
+        <CreateCourse onAddCourse={addNewCourse} />
+      ) : (
+        <Courses courseList={courseList} setAddCourse={setIsCreateCourse} />
+      )}
+    </>
+  )
 }
 
-export default App;
+export default App
