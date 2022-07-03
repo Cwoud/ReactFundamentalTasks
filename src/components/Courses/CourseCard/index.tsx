@@ -17,12 +17,11 @@ import {
 
 type CourseCardProps = {
   courseInfo: CourseDetails
-  onSelectCourse: (id: string) => void
 }
 function CourseCard(props: CourseCardProps) {
   const { id, title, description, duration, authors, creationDate } =
     props.courseInfo
-  const { onSelectCourse, courseInfo } = props
+
   const authorsArr = authors.map((author) =>
     mockedAuthorsList
       .filter((authorInfo) => authorInfo.id === author)
@@ -59,9 +58,7 @@ function CourseCard(props: CourseCardProps) {
             <Link to={`/courses/${id}`}>
               <StartCourseButton
                 buttonName={'Show course'}
-                onButtonClick={() => {
-                  onSelectCourse(id)
-                }}
+                onButtonClick={() => {}}
                 type={'button'}
               />
             </Link>

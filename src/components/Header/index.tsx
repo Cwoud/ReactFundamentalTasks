@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useHistory } from 'react-router'
+import useAuth from '../hooks/useAuth'
 import Logo from './Logo'
 import {
   ButtonWrapper,
@@ -8,29 +9,30 @@ import {
   LogoWrapper,
 } from './styled-components'
 
-type HeaderProps = {
-  username: string | null
-}
-function Header(props: HeaderProps) {
+function Header() {
   const history = useHistory()
-
+  const { isAuthenticated, logout, username } = useAuth()
+  console.log(isAuthenticated)
   return (
     <HeaderContainer>
       <LogoWrapper>
         <Logo />
       </LogoWrapper>
 
-      <ButtonWrapper>
-        {props.username}
-        <LogoutButton
-          buttonName={'Logout'}
-          onButtonClick={() => {
-            localStorage.clear()
-            history.push('/login')
-          }}
-          type={'button'}
-        />
-      </ButtonWrapper>
+      {isAuthenticated && (
+        <ButtonWrapper>
+          {username}
+          <LogoutButton
+            buttonName={'Logout'}
+            onButtonClick={() => {
+              logout()
+              localStorage.clear()
+              history.push('/login')
+            }}
+            type={'button'}
+          />
+        </ButtonWrapper>
+      )}
     </HeaderContainer>
   )
 }

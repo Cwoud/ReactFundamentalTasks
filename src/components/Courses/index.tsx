@@ -5,15 +5,16 @@ import SearchBar from './SearchBar'
 import { CourseDetails } from '../interface'
 import { useHistory } from 'react-router'
 import { useRouteMatch } from 'react-router-dom'
+import useAuth from '../hooks/useAuth'
 
 type CoursesProps = {
   courseList: CourseDetails[]
-  onSelectCourse: (id: string) => void
 }
 function Courses(props: CoursesProps) {
   const history = useHistory()
   let { url } = useRouteMatch()
-  const { courseList, onSelectCourse } = props
+  // const { isAuthenticated, login } = useAuth()
+  const { courseList } = props
   const [searchValue, setSearchValue] = useState('')
   const [searchCourseList, setSearchCourseList] = useState(courseList)
 
@@ -45,6 +46,14 @@ function Courses(props: CoursesProps) {
       setSearchCourseList(courseList)
     }
   }, [searchValue, courseList])
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token')
+  //   if (!token) {
+  //     history.push('/login')
+  //   }
+  // }, [])
+
   return (
     <>
       <Container>
@@ -56,12 +65,7 @@ function Courses(props: CoursesProps) {
           }}
         />
         {searchCourseList.map((courseInfo) => {
-          return (
-            <CourseCard
-              courseInfo={courseInfo}
-              onSelectCourse={onSelectCourse}
-            />
-          )
+          return <CourseCard courseInfo={courseInfo} />
         })}
       </Container>
     </>

@@ -12,15 +12,17 @@ import Registration from '../Registration'
 
 function Routes() {
   const [courseList, setCourseList] = useState(mockedCoursesList)
-  const [courseId, setCourseId] = useState('')
 
   const addNewCourse = (newCourse: CourseDetails) => {
     setCourseList([...courseList, newCourse])
   }
+  console.log(localStorage)
+  const username = localStorage.getItem('username')
+  console.log({ username })
   return (
     <div>
       <BrowserRouter>
-        <Header username={localStorage.getItem('username')} />
+        <Header />
         <Switch>
           <Route exact path='/' children={<App />} />
           <Route path='/registration' children={<Registration />} />
@@ -28,14 +30,7 @@ function Routes() {
           <Route
             exact
             path='/courses'
-            children={
-              <Courses
-                courseList={courseList}
-                onSelectCourse={(id: string) => {
-                  setCourseId(id)
-                }}
-              />
-            }
+            children={<Courses courseList={courseList} />}
           />
           <Route
             path='/courses/add'

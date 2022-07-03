@@ -4,9 +4,11 @@ import Button from '../../common/Button'
 import Input from '../../common/Input'
 import { LoginPayload, UserInfo } from '../interface'
 import { useHistory } from 'react-router-dom'
+import useAuth from '../hooks/useAuth'
 
 function Login() {
   const history = useHistory()
+  const { isAuthenticated, login } = useAuth()
   const loginInitialState: UserInfo = {
     name: '',
     email: '',
@@ -37,9 +39,12 @@ function Login() {
     try {
       const response = await fetch(url, settings)
       const data: LoginPayload = await response.json()
+
+      login()
       localStorage.setItem('username', data.user.name)
       localStorage.setItem('token', data.result.replace('Bearer', '').trim())
       history.push('./courses')
+
       return data
     } catch (e) {
       return e
