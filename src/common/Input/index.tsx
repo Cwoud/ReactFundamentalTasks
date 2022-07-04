@@ -1,4 +1,5 @@
 import React from 'react'
+import { InputContainer } from './styled-components'
 
 type InputProps = {
   inputName: string
@@ -10,7 +11,7 @@ function Input(props: InputProps) {
 
   return (
     <>
-      <input
+      <InputContainer
         name={inputName}
         type='text'
         placeholder={placeholderText}

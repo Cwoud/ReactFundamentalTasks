@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import Button from '../../../common/Button'
 import Input from '../../../common/Input'
-import { mockedAuthorsList } from '../../../constants'
 import { getCourseDuration } from '../../../helpers/getCourseDuration'
 import { AuthorInfo } from '../../interface'
 import { v4 as uuidv4 } from 'uuid'
 import AuthorItem from '../AuthorItem'
 
-function useBottomContainer() {
+type UseBottomContainer = {
+  authorList: AuthorInfo[]
+  setAuthorList: React.Dispatch<React.SetStateAction<AuthorInfo[]>>
+}
+
+function useBottomContainer(props: UseBottomContainer) {
+  const { authorList, setAuthorList } = props
   const [authorName, setAuthorName] = useState('')
   const [duration, setDuration] = useState(0)
-  const [authorList, setAuthorList] = useState(mockedAuthorsList)
+  // const [authorList, setAuthorList] = useState(mockedAuthorsList)
+  const [availableAuthors, setAvailableAuthors] =
+    useState<AuthorInfo[]>(authorList)
   const [courseAuthor, setCourseAuthor] = useState<AuthorInfo[]>([])
 
   const onAuthorNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,34 +47,19 @@ function useBottomContainer() {
   }
 
   const onAddAuthor = (id: string) => {
-    const addedAuthor = authorList.filter((author) => {
-      if (author.id === id) {
-        return author
-      }
-    })
-
-    const newAuthorList = authorList.filter((author) => {
-      if (author.id !== id) {
-        return author
-      }
-    })
-    setAuthorList(newAuthorList)
+    const addedAuthor = availableAuthors.filter((author) => author.id === id)
+    const newAuthorList = availableAuthors.filter((author) => author.id !== id)
+    setAvailableAuthors(newAuthorList)
     setCourseAuthor([...courseAuthor, ...addedAuthor])
   }
 
   const onDeleteAuthor = (id: string) => {
-    const deletedAuthor = courseAuthor.filter((author) => {
-      if (author.id === id) {
-        return author
-      }
-    })
-    const newCourseAuthorList = courseAuthor.filter((author) => {
-      if (author.id !== id) {
-        return author
-      }
-    })
+    const deletedAuthor = courseAuthor.filter((author) => author.id === id)
+    const newCourseAuthorList = courseAuthor.filter(
+      (author) => author.id !== id
+    )
     setCourseAuthor(newCourseAuthorList)
-    setAuthorList([...authorList, ...deletedAuthor])
+    setAvailableAuthors([...availableAuthors, ...deletedAuthor])
   }
 
   const onCreateAuthor = () => {
@@ -76,6 +68,7 @@ function useBottomContainer() {
       id,
       name: authorName,
     }
+    setAvailableAuthors([...availableAuthors, newAuthor])
     setAuthorList([...authorList, newAuthor])
   }
 
@@ -122,7 +115,7 @@ function useBottomContainer() {
     return (
       <div>
         <h3>{'Authors'}</h3>
-        {authorList.map((author) => {
+        {availableAuthors.map((author) => {
           return (
             <AuthorItem
               authorInfo={author}

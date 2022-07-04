@@ -3,6 +3,11 @@ import { Link, useHistory } from 'react-router-dom'
 import Button from '../../common/Button'
 import Input from '../../common/Input'
 import { UserInfo } from '../interface'
+import {
+  RegisterButtonWrapper,
+  RegisterContainer,
+  RegisterWrapper,
+} from './styled-components'
 
 function Registration() {
   const history = useHistory()
@@ -48,48 +53,52 @@ function Registration() {
     onRegisterData()
   }
   return (
-    <>
+    <RegisterContainer>
       <form onSubmit={submitHandler}>
-        <h3>{'Registration'}</h3>
-        <div>
-          <label>{'Name'}</label>
-        </div>
-        <Input
-          inputName={'name'}
-          placeholderText={'Enter name'}
-          onValueChange={(e) => {
-            onNameChange(e)
-          }}
-        />
-        <div>
-          <label>{'Email'}</label>
-        </div>
-        <Input
-          inputName={'email'}
-          placeholderText={'Enter email'}
-          onValueChange={(e) => {
-            onEmailChange(e)
-          }}
-        />
-        <div>
-          <label>{'Password'}</label>
-        </div>
-        <Input
-          inputName={'password'}
-          placeholderText={'Enter password'}
-          onValueChange={(e) => {
-            onPasswordChange(e)
-          }}
-        />
-        <Button
-          onButtonClick={() => {}}
-          type={'submit'}
-          buttonName={'Registration'}
-        />
+        <RegisterWrapper>
+          <h3>{'Registration'}</h3>
+          <div>
+            <label>{'Name'}</label>
+          </div>
+          <Input
+            inputName={'name'}
+            placeholderText={'Enter name'}
+            onValueChange={(e) => {
+              onNameChange(e)
+            }}
+          />
+          <div>
+            <label>{'Email'}</label>
+          </div>
+          <Input
+            inputName={'email'}
+            placeholderText={'Enter email'}
+            onValueChange={(e) => {
+              onEmailChange(e)
+            }}
+          />
+          <div>
+            <label>{'Password'}</label>
+          </div>
+          <Input
+            inputName={'password'}
+            placeholderText={'Enter password'}
+            onValueChange={(e) => {
+              onPasswordChange(e)
+            }}
+          />
+          <RegisterButtonWrapper>
+            <Button
+              onButtonClick={() => {}}
+              type={'submit'}
+              buttonName={'Registration'}
+            />
+          </RegisterButtonWrapper>
+          {'If you have an account you can '}
+          <Link to='/login'>{'Login'}</Link>
+        </RegisterWrapper>
       </form>
-      {'If you have an account you can '}
-      <Link to='/login'>{'Login'}</Link>
-    </>
+    </RegisterContainer>
   )
 }
 

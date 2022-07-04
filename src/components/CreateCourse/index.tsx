@@ -4,14 +4,16 @@ import useUpperContainer from './hooks/useUpperContainer'
 import useBottomContainer from './hooks/useBottomContainer'
 import { v4 as uuidv4 } from 'uuid'
 import dayjs from 'dayjs'
-import { CourseDetails } from '../interface'
+import { AuthorInfo, CourseDetails } from '../interface'
 import { useHistory } from 'react-router'
 
 type CreateCourseProps = {
   onAddCourse: (course: CourseDetails) => void
+  authorList: AuthorInfo[]
+  setAuthorList: React.Dispatch<React.SetStateAction<AuthorInfo[]>>
 }
 function CreateCourse(props: CreateCourseProps) {
-  const { onAddCourse } = props
+  const { onAddCourse, authorList, setAuthorList } = props
   const history = useHistory()
   const { title, description, renderTitle, renderDescription } =
     useUpperContainer()
@@ -22,8 +24,7 @@ function CreateCourse(props: CreateCourseProps) {
     renderDuration,
     renderAuthorsAvailable,
     renderAuthorsList,
-  } = useBottomContainer()
-  console.log({ courseAuthor })
+  } = useBottomContainer({ authorList, setAuthorList })
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (

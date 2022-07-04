@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { mockedAuthorsList } from '../../../constants'
 import { formatCreationDate } from '../../../helpers/formatCreationDate'
 import { getCourseDuration } from '../../../helpers/getCourseDuration'
-import { CourseDetails } from '../../interface'
+import { AuthorInfo, CourseDetails } from '../../interface'
 import {
   ButtonWrapper,
   CourseContainer,
@@ -17,13 +17,14 @@ import {
 
 type CourseCardProps = {
   courseInfo: CourseDetails
+  authorList: AuthorInfo[]
 }
 function CourseCard(props: CourseCardProps) {
-  const { id, title, description, duration, authors, creationDate } =
-    props.courseInfo
-
+  const { authorList, courseInfo } = props
+  const { id, title, description, duration, authors, creationDate } = courseInfo
+  console.log({ authorList })
   const authorsArr = authors.map((author) =>
-    mockedAuthorsList
+    authorList
       .filter((authorInfo) => authorInfo.id === author)
       .map((author) => {
         return author.name

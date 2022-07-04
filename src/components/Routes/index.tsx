@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import App from '../../App'
-import { mockedCoursesList } from '../../constants'
+import { mockedAuthorsList, mockedCoursesList } from '../../constants'
 import CourseInfo from '../CourseInfo'
 import Courses from '../Courses'
 import CreateCourse from '../CreateCourse'
@@ -12,13 +12,11 @@ import Registration from '../Registration'
 
 function Routes() {
   const [courseList, setCourseList] = useState(mockedCoursesList)
+  const [authorList, setAuthorList] = useState(mockedAuthorsList)
 
   const addNewCourse = (newCourse: CourseDetails) => {
     setCourseList([...courseList, newCourse])
   }
-  console.log(localStorage)
-  const username = localStorage.getItem('username')
-  console.log({ username })
   return (
     <div>
       <BrowserRouter>
@@ -30,11 +28,19 @@ function Routes() {
           <Route
             exact
             path='/courses'
-            children={<Courses courseList={courseList} />}
+            children={
+              <Courses courseList={courseList} authorList={authorList} />
+            }
           />
           <Route
             path='/courses/add'
-            children={<CreateCourse onAddCourse={addNewCourse} />}
+            children={
+              <CreateCourse
+                onAddCourse={addNewCourse}
+                authorList={authorList}
+                setAuthorList={setAuthorList}
+              />
+            }
           />
           <Route
             path='/courses/:courseId'

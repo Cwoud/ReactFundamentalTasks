@@ -12,7 +12,6 @@ import {
 function Header() {
   const history = useHistory()
   const { isAuthenticated, logout, username } = useAuth()
-  console.log(isAuthenticated)
   return (
     <HeaderContainer>
       <LogoWrapper>
