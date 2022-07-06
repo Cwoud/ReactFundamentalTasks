@@ -80,6 +80,7 @@ function useBottomContainer(props: UseBottomContainer) {
           <label>{'Author name'}</label>
         </div>
         <Input
+          type={'text'}
           inputName={'addAuthor'}
           onValueChange={onAuthorNameChange}
           placeholderText={'Enter author name...'}
@@ -101,6 +102,7 @@ function useBottomContainer(props: UseBottomContainer) {
           <label>{'Duration'}</label>
         </div>
         <Input
+          type={'text'}
           inputName={'duration'}
           onValueChange={onDurationChange}
           placeholderText={'Enter duration in minutes...'}

@@ -61,6 +61,7 @@ function Registration() {
             <label>{'Name'}</label>
           </div>
           <Input
+            type={'text'}
             inputName={'name'}
             placeholderText={'Enter name'}
             onValueChange={(e) => {
@@ -71,6 +72,7 @@ function Registration() {
             <label>{'Email'}</label>
           </div>
           <Input
+            type={'email'}
             inputName={'email'}
             placeholderText={'Enter email'}
             onValueChange={(e) => {
@@ -81,6 +83,7 @@ function Registration() {
             <label>{'Password'}</label>
           </div>
           <Input
+            type={'password'}
             inputName={'password'}
             placeholderText={'Enter password'}
             onValueChange={(e) => {

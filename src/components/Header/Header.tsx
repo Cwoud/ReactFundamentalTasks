@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useHistory } from 'react-router'
 import useAuth from '../hooks/useAuth'
 import Logo from './Logo'

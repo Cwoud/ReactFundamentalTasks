@@ -8,7 +8,7 @@ import useAuth from '../hooks/useAuth'
 
 function Login() {
   const history = useHistory()
-  const { isAuthenticated, login } = useAuth()
+  const { login } = useAuth()
   const loginInitialState: UserInfo = {
     name: '',
     email: '',
@@ -63,6 +63,7 @@ function Login() {
           <label>{'Name'}</label>
         </div>
         <Input
+          type={'text'}
           inputName={'name'}
           placeholderText={'Enter name'}
           onValueChange={(e) => {
@@ -73,6 +74,7 @@ function Login() {
           <label>{'Email'}</label>
         </div>
         <Input
+          type={'email'}
           inputName={'email'}
           placeholderText={'Enter email'}
           onValueChange={(e) => {
@@ -83,6 +85,7 @@ function Login() {
           <label>{'Password'}</label>
         </div>
         <Input
+          type={'password'}
           inputName={'password'}
           placeholderText={'Enter password'}
           onValueChange={(e) => {

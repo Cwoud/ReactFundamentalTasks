@@ -14,6 +14,7 @@ function SearchBar(props: SearchBarProps) {
   return (
     <SearchBarWrapper>
       <Input
+        type={'text'}
         placeholderText={'Enter course name...'}
         onValueChange={onSearchValueChange}
         inputName={'enterCourse'}

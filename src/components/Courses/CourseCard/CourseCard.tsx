@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { mockedAuthorsList } from '../../../constants'
 import { formatCreationDate } from '../../../helpers/formatCreationDate'
 import { getCourseDuration } from '../../../helpers/getCourseDuration'
 import { AuthorInfo, CourseDetails } from '../../interface'

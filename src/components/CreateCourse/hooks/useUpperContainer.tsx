@@ -14,6 +14,7 @@ function useUpperContainer() {
       <div>
         <div>{'Title'}</div>
         <Input
+          type={'text'}
           inputName={'title'}
           onValueChange={onTitleChange}
           placeholderText={'Enter title...'}
