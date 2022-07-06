@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { mockedCoursesList } from '../../constants'
 import CourseCard from './CourseCard'
-import { Container } from '../Courses/styled-components'
+import { Container } from './styled-components'
 import SearchBar from './SearchBar'
 import { CourseInfo } from '../interface'
 
 type CoursesProps = {
   courseList: CourseInfo[]
-  // setCourseList: React.Dispatch<React.SetStateAction<CourseInfo[]>>
   setAddCourse: React.Dispatch<React.SetStateAction<boolean>>
 }
 function Courses(props: CoursesProps) {

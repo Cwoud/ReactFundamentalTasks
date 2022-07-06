@@ -40,31 +40,18 @@ function useBottomContainer() {
   }
 
   const onAddAuthor = (id: string) => {
-    const addedAuthor = authorList.filter((author) => {
-      if (author.id === id) {
-        return author
-      }
-    })
-    const newAuthorList = authorList.filter((author) => {
-      if (author.id !== id) {
-        return author
-      }
-    })
+    const addedAuthor = authorList.filter((author) => author.id === id)
+    const newAuthorList = authorList.filter((author) => author.id !== id)
     setAuthorList(newAuthorList)
     setCourseAuthor([...courseAuthor, ...addedAuthor])
   }
 
   const onDeleteAuthor = (id: string) => {
-    const deletedAuthor = courseAuthor.filter((author) => {
-      if (author.id === id) {
-        return author
-      }
-    })
-    const newCourseAuthorList = courseAuthor.filter((author) => {
-      if (author.id !== id) {
-        return author
-      }
-    })
+    const deletedAuthor = courseAuthor.filter((author) => author.id === id)
+    const newCourseAuthorList = courseAuthor.filter(
+      (author) => author.id !== id
+    )
+
     setCourseAuthor(newCourseAuthorList)
     setAuthorList([...authorList, ...deletedAuthor])
   }
