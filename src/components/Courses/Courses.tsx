@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import CourseCard from './CourseCard'
-import { Container } from '../Courses/styled-components'
+import { Container } from './styled-components'
 import SearchBar from './SearchBar'
 import { AuthorInfo, CourseDetails } from '../interface'
 import { useHistory } from 'react-router'
