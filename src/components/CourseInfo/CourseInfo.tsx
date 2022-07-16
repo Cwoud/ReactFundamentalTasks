@@ -4,14 +4,12 @@ import Button from '../../common/Button'
 import { mockedAuthorsList } from '../../constants'
 import { formatCreationDate } from '../../helpers/formatCreationDate'
 import { getCourseDuration } from '../../helpers/getCourseDuration'
+import { useAppSelector } from '../hooks/hooks'
 import { CourseDetails } from '../interface'
 
-type CourseInfoProps = {
-  courseList: CourseDetails[]
-}
-function CourseInfo(props: CourseInfoProps) {
+function CourseInfo() {
   const history = useHistory()
-  const { courseList } = props
+  const courseList: CourseDetails[] = useAppSelector((state) => state.courses)
   let { url } = useRouteMatch()
   const courseId = url.replace('/courses/', '').trim()
   const getSelectCourseInfo = (id: string) => {

@@ -23,7 +23,7 @@ export const LeftContainer = styled.div``
 export const SectionTitle = styled.span`
   font-weight: bold;
 `
-export const StartCourseButton = styled(Button)``
+export const ShowCourseButton = styled(Button)``
 export const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;

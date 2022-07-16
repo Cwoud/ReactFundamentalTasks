@@ -2,24 +2,25 @@ import React, { useEffect, useState } from 'react'
 import Button from '../../../common/Button'
 import Input from '../../../common/Input'
 import { getCourseDuration } from '../../../helpers/getCourseDuration'
-import { AuthorInfo } from '../../interface'
-import { v4 as uuidv4 } from 'uuid'
+import { AuthorInfo, NewAuthor } from '../../interface'
 import AuthorItem from '../AuthorItem'
+import { useAppSelector } from '../../hooks/hooks'
+import { addAuthor } from '../../../services'
+import { useDispatch } from 'react-redux'
 
-type UseBottomContainer = {
-  authorList: AuthorInfo[]
-  setAuthorList: React.Dispatch<React.SetStateAction<AuthorInfo[]>>
-}
-
-function useBottomContainer(props: UseBottomContainer) {
-  const { authorList, setAuthorList } = props
+function useBottomContainer() {
+  const dispatch = useDispatch()
+  const authors: AuthorInfo[] = useAppSelector((state) => state.authors)
   const [authorName, setAuthorName] = useState('')
   const [duration, setDuration] = useState(0)
-  // const [authorList, setAuthorList] = useState(mockedAuthorsList)
-  const [availableAuthors, setAvailableAuthors] =
-    useState<AuthorInfo[]>(authorList)
+
   const [courseAuthor, setCourseAuthor] = useState<AuthorInfo[]>([])
 
+  const availableAuthors = authors.filter(
+    (availableAuthor) => !courseAuthor.includes(availableAuthor)
+  )
+
+  //On input changes
   const onAuthorNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     return setAuthorName(e.target.value)
   }
@@ -28,6 +29,7 @@ function useBottomContainer(props: UseBottomContainer) {
     return setDuration(Number(e.target.value))
   }
 
+  //Get data for course authors list
   const getAuthorsList = () => {
     if (courseAuthor.length === 0) {
       return <div>{'Author list is empty'}</div>
@@ -47,29 +49,22 @@ function useBottomContainer(props: UseBottomContainer) {
   }
 
   const onAddAuthor = (id: string) => {
-    const addedAuthor = availableAuthors.filter((author) => author.id === id)
-    const newAuthorList = availableAuthors.filter((author) => author.id !== id)
-    setAvailableAuthors(newAuthorList)
+    const addedAuthor = authors.filter((author) => author.id === id)
     setCourseAuthor([...courseAuthor, ...addedAuthor])
   }
 
   const onDeleteAuthor = (id: string) => {
-    const deletedAuthor = courseAuthor.filter((author) => author.id === id)
     const newCourseAuthorList = courseAuthor.filter(
       (author) => author.id !== id
     )
     setCourseAuthor(newCourseAuthorList)
-    setAvailableAuthors([...availableAuthors, ...deletedAuthor])
   }
 
   const onCreateAuthor = () => {
-    const id = uuidv4()
-    const newAuthor: AuthorInfo = {
-      id,
+    const newAuthor: NewAuthor = {
       name: authorName,
     }
-    setAvailableAuthors([...availableAuthors, newAuthor])
-    setAuthorList([...authorList, newAuthor])
+    addAuthor(newAuthor, dispatch)
   }
 
   const renderAddAuthor = () => {

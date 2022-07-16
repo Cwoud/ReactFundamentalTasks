@@ -1,14 +1,18 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../../common/Button'
 import Input from '../../common/Input'
-import { LoginPayload, UserInfo } from '../interface'
+import { UserInfo } from '../interface'
 import { useHistory } from 'react-router-dom'
-import useAuth from '../hooks/useAuth'
+import { useDispatch } from 'react-redux'
+import { useAppSelector } from '../hooks/hooks'
+import { onLogin } from '../../services'
 
 function Login() {
+  const dispatch = useDispatch()
   const history = useHistory()
-  const { login } = useAuth()
+  const user = useAppSelector((state) => state.user)
+
   const loginInitialState: UserInfo = {
     name: '',
     email: '',
@@ -26,35 +30,18 @@ function Login() {
     setLoginData({ ...loginData, password: e.target.value })
   }
 
-  const onRegisterData = async () => {
-    const url = 'http://localhost:4000/login'
-    const settings = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(loginData),
-    }
-    try {
-      const response = await fetch(url, settings)
-      const data: LoginPayload = await response.json()
-
-      login()
-      localStorage.setItem('username', data.user.name)
-      localStorage.setItem('token', data.result.replace('Bearer', '').trim())
-      history.push('./courses')
-
-      return data
-    } catch (e) {
-      return e
-    }
-  }
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    onRegisterData()
+    onLogin(loginData, dispatch)
   }
 
+  useEffect(() => {
+    if (user.isAuth) {
+      history.push('./courses')
+      localStorage.setItem('username', user.name)
+      localStorage.setItem('token', user.token)
+    }
+  }, [user, history])
   return (
     <>
       <form onSubmit={submitHandler}>

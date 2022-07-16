@@ -5,20 +5,23 @@ import SearchBar from './SearchBar'
 import { AuthorInfo, CourseDetails } from '../interface'
 import { useHistory } from 'react-router'
 import { useRouteMatch } from 'react-router-dom'
+import { useAppSelector } from '../hooks/hooks'
+import { getAuthors, getCourses } from '../../services'
+import { useDispatch } from 'react-redux'
 
-type CoursesProps = {
-  courseList: CourseDetails[]
-  authorList: AuthorInfo[]
-}
-function Courses(props: CoursesProps) {
+function Courses() {
+  const dispatch = useDispatch()
   const history = useHistory()
   let { url } = useRouteMatch()
-  const { courseList, authorList } = props
+
+  const courses: CourseDetails[] = useAppSelector((state) => state.courses)
+  const authors: AuthorInfo[] = useAppSelector((state) => state.authors)
+
   const [searchValue, setSearchValue] = useState('')
-  const [searchCourseList, setSearchCourseList] = useState(courseList)
+  const [searchCourseList, setSearchCourseList] = useState(courses)
 
   const onSearchClick = () => {
-    const filteredCourse = filterArrayByKeyword(courseList, searchValue)
+    const filteredCourse = filterArrayByKeyword(courses, searchValue)
     setSearchCourseList(filteredCourse)
   }
 
@@ -42,9 +45,14 @@ function Courses(props: CoursesProps) {
 
   useEffect(() => {
     if (searchValue === '') {
-      setSearchCourseList(courseList)
+      setSearchCourseList(courses)
     }
-  }, [searchValue, courseList])
+  }, [searchValue, courses])
+
+  useEffect(() => {
+    getCourses(dispatch)
+    getAuthors(dispatch)
+  }, [])
 
   return (
     <>
@@ -57,7 +65,7 @@ function Courses(props: CoursesProps) {
           }}
         />
         {searchCourseList.map((courseInfo) => {
-          return <CourseCard courseInfo={courseInfo} authorList={authorList} />
+          return <CourseCard courseInfo={courseInfo} authorList={authors} />
         })}
       </Container>
     </>

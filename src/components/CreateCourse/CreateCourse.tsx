@@ -2,18 +2,13 @@ import React from 'react'
 import { BottomContainer, UpperContainer } from './styled-components'
 import useUpperContainer from './hooks/useUpperContainer'
 import useBottomContainer from './hooks/useBottomContainer'
-import { v4 as uuidv4 } from 'uuid'
-import dayjs from 'dayjs'
-import { AuthorInfo, CourseDetails } from '../interface'
+import { NewCourse } from '../interface'
 import { useHistory } from 'react-router'
+import { useDispatch } from 'react-redux'
+import { addCourse } from '../../services'
 
-type CreateCourseProps = {
-  onAddCourse: (course: CourseDetails) => void
-  authorList: AuthorInfo[]
-  setAuthorList: React.Dispatch<React.SetStateAction<AuthorInfo[]>>
-}
-function CreateCourse(props: CreateCourseProps) {
-  const { onAddCourse, authorList, setAuthorList } = props
+function CreateCourse() {
+  const dispatch = useDispatch()
   const history = useHistory()
   const { title, description, renderTitle, renderDescription } =
     useUpperContainer()
@@ -24,7 +19,7 @@ function CreateCourse(props: CreateCourseProps) {
     renderDuration,
     renderAuthorsAvailable,
     renderAuthorsList,
-  } = useBottomContainer({ authorList, setAuthorList })
+  } = useBottomContainer()
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (
@@ -35,17 +30,14 @@ function CreateCourse(props: CreateCourseProps) {
     ) {
       alert('Please fill in all fields!')
     } else {
-      const date = dayjs().format('DD/MM/YYYY')
       const authors = courseAuthor.map((author) => author.id)
-      const newCourse: CourseDetails = {
-        id: uuidv4(),
+      const newCourse: NewCourse = {
         title: title,
         description: description,
-        creationDate: date,
         duration: duration,
         authors: authors,
       }
-      onAddCourse(newCourse)
+      addCourse(newCourse, dispatch)
       history.goBack()
     }
   }

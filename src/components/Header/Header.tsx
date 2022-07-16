@@ -1,6 +1,8 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
-import useAuth from '../hooks/useAuth'
+import { useAppSelector } from '../hooks/hooks'
+import userActions from '../../store/user/actions'
 import Logo from './Logo'
 import {
   ButtonWrapper,
@@ -10,21 +12,23 @@ import {
 } from './styled-components'
 
 function Header() {
+  const dispatch = useDispatch()
+  const user = useAppSelector((state) => state.user)
   const history = useHistory()
-  const { isAuthenticated, logout, username } = useAuth()
+
   return (
     <HeaderContainer>
       <LogoWrapper>
         <Logo />
       </LogoWrapper>
 
-      {isAuthenticated && (
+      {user.isAuth && (
         <ButtonWrapper>
-          {username}
+          {user.name}
           <LogoutButton
             buttonName={'Logout'}
             onButtonClick={() => {
-              logout()
+              dispatch(userActions.loginReset())
               localStorage.clear()
               history.push('/login')
             }}
