@@ -54,3 +54,8 @@ export const HOUR = 60
 export const MINUTE = 60
 export const SLASH = '/'
 export const DOT = '.'
+
+export enum userRole {
+  ADMIN = 'admin',
+  USER = 'user',
+}

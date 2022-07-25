@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
-import { useAppSelector } from '../hooks/hooks'
+import { useAppDispatch, useAppSelector } from '../hooks/hooks'
 import userActions from '../../store/user/actions'
 import Logo from './Logo'
 import {
@@ -10,9 +10,10 @@ import {
   LogoutButton,
   LogoWrapper,
 } from './styled-components'
+import { onLogout } from '../../store/user/thunk'
 
 function Header() {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const user = useAppSelector((state) => state.user)
   const history = useHistory()
 

@@ -5,18 +5,16 @@ import SearchBar from './SearchBar'
 import { AuthorInfo, CourseDetails } from '../interface'
 import { useHistory } from 'react-router'
 import { useRouteMatch } from 'react-router-dom'
-import { useAppSelector } from '../hooks/hooks'
-import { getAuthors, getCourses } from '../../services'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../hooks/hooks'
+import { fetchAuthors } from '../../store/authors/thunk'
+import { getCourses } from '../../store/courses/thunk'
 
 function Courses() {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const history = useHistory()
   let { url } = useRouteMatch()
-
   const courses: CourseDetails[] = useAppSelector((state) => state.courses)
   const authors: AuthorInfo[] = useAppSelector((state) => state.authors)
-
   const [searchValue, setSearchValue] = useState('')
   const [searchCourseList, setSearchCourseList] = useState(courses)
 
@@ -50,8 +48,8 @@ function Courses() {
   }, [searchValue, courses])
 
   useEffect(() => {
-    getCourses(dispatch)
-    getAuthors(dispatch)
+    dispatch(getCourses())
+    dispatch(fetchAuthors())
   }, [])
 
   return (

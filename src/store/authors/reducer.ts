@@ -1,16 +1,12 @@
-import { AuthorInfo, AuthorsPayload } from '../../components/interface'
+import { AnyAction } from 'redux'
+import { AuthorInfo } from '../../components/interface'
 import { ADD_AUTHOR, GET_AUTHORS } from './types'
-
-type AuthorsAction = {
-  type: string //name of the action
-  payload: AuthorsPayload
-}
 
 export const authorsInitialState: AuthorInfo[] = []
 
 const authorsReducer = (
   state: AuthorInfo[] = authorsInitialState,
-  action: AuthorsAction
+  action: AnyAction
 ) => {
   switch (action.type) {
     case GET_AUTHORS:

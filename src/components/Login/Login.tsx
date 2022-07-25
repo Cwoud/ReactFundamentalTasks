@@ -4,12 +4,11 @@ import Button from '../../common/Button'
 import Input from '../../common/Input'
 import { UserInfo } from '../interface'
 import { useHistory } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { useAppSelector } from '../hooks/hooks'
-import { onLogin } from '../../services'
+import { useAppDispatch, useAppSelector } from '../hooks/hooks'
+import { onLogin } from '../../store/user/thunk'
 
 function Login() {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const history = useHistory()
   const user = useAppSelector((state) => state.user)
 
@@ -32,7 +31,7 @@ function Login() {
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    onLogin(loginData, dispatch)
+    dispatch(onLogin(loginData))
   }
 
   useEffect(() => {

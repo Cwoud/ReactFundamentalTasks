@@ -1,17 +1,18 @@
-import { LoginPayload } from '../../components/interface'
-import { LOGIN_SUCCESS, LOGIN_FAIL, LOGIN_RESET } from './types'
+import { AnyAction } from 'redux'
+import {
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGIN_RESET,
+  GET_CURRENT_USER,
+  LOGOUT_USER,
+} from './types'
 
-type UserAction = {
-  type: string //name of the action
-  payload: LoginPayload
-}
-
-type UserState = {
+export type UserState = {
   isAuth: boolean // default value - false. After success login - true
   name: string // default value - empty string. After success login - name of user
   email: string // default value - empty string. After success login - email of user
   token: string // default value - empty string or token value from localStorage.
-  // After success login - value from API /login response. See Swagger.
+  role: string
 }
 
 export const initialUserState: UserState = {
@@ -19,11 +20,12 @@ export const initialUserState: UserState = {
   name: '',
   email: '',
   token: '',
+  role: '',
 }
 
 const userReducer = (
   state: UserState = initialUserState,
-  action: UserAction
+  action: AnyAction
 ) => {
   switch (action.type) {
     case LOGIN_SUCCESS:
@@ -42,6 +44,20 @@ const userReducer = (
     case LOGIN_RESET: {
       return initialUserState
     }
+    case GET_CURRENT_USER: {
+      return {
+        ...initialUserState,
+        isAuth: state.isAuth,
+        name: action.payload.result.name,
+        email: action.payload.result.email,
+        token: state.token,
+        role: action.payload.result.role,
+      }
+    }
+    case LOGOUT_USER: {
+      return initialUserState
+    }
+
     default:
       return state
   }

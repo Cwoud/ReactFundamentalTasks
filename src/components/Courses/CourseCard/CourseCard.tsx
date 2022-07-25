@@ -1,9 +1,10 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { userRole } from '../../../constants'
 import { formatCreationDate } from '../../../helpers/formatCreationDate'
 import { getCourseDuration } from '../../../helpers/getCourseDuration'
-import { deleteCourse } from '../../../services'
+import { deleteCourse } from '../../../store/courses/thunk'
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
 import { AuthorInfo, CourseDetails } from '../../interface'
 import {
   ButtonWrapper,
@@ -21,7 +22,9 @@ type CourseCardProps = {
   authorList: AuthorInfo[]
 }
 function CourseCard(props: CourseCardProps) {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
+  const user = useAppSelector((state) => state.user)
+  const isAdmin = user.role === userRole.ADMIN
   const { authorList, courseInfo } = props
   const { id, title, description, duration, authors, creationDate } = courseInfo
 
@@ -65,18 +68,24 @@ function CourseCard(props: CourseCardProps) {
                 type={'button'}
               />
             </Link>
-            <ShowCourseButton
-              buttonName={'Update Course'}
-              onButtonClick={() => {}}
-              type={'button'}
-            />
-            <ShowCourseButton
-              buttonName={'Delete'}
-              onButtonClick={() => {
-                deleteCourse(id, dispatch)
-              }}
-              type={'button'}
-            />
+            {isAdmin && (
+              <Link to={`/courses/update/${id}`}>
+                <ShowCourseButton
+                  buttonName={'Update Course'}
+                  onButtonClick={() => {}}
+                  type={'button'}
+                />
+              </Link>
+            )}
+            {isAdmin && (
+              <ShowCourseButton
+                buttonName={'Delete'}
+                onButtonClick={() => {
+                  dispatch(deleteCourse(id))
+                }}
+                type={'button'}
+              />
+            )}
           </ButtonWrapper>
         </RightContainer>
       </CourseContainer>

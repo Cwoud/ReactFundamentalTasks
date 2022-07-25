@@ -1,16 +1,12 @@
-import { CourseDetails, CoursesPayload } from '../../components/interface'
+import { AnyAction } from 'redux'
+import { CourseDetails } from '../../components/interface'
 import { ADD_COURSE, DELETE_COURSE, GET_COURSES, UPDATE_COURSE } from './types'
-
-type CoursesAction = {
-  type: string //name of the action
-  payload: CoursesPayload
-}
 
 export const coursesInitialState: CourseDetails[] = []
 
 const coursesReducer = (
   state: CourseDetails[] = coursesInitialState,
-  action: CoursesAction
+  action: AnyAction
 ) => {
   switch (action.type) {
     case GET_COURSES:

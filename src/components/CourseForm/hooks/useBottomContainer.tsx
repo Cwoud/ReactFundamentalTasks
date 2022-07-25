@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react'
 import Button from '../../../common/Button'
 import Input from '../../../common/Input'
 import { getCourseDuration } from '../../../helpers/getCourseDuration'
-import { AuthorInfo, NewAuthor } from '../../interface'
+import { AuthorInfo, CourseDetails, NewAuthor } from '../../interface'
 import AuthorItem from '../AuthorItem'
-import { useAppSelector } from '../../hooks/hooks'
-import { addAuthor } from '../../../services'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks'
+import { addAuthor } from '../../../store/authors/thunk'
 
-function useBottomContainer() {
-  const dispatch = useDispatch()
+function useBottomContainer(courseDetails: CourseDetails | undefined) {
+  const dispatch = useAppDispatch()
   const authors: AuthorInfo[] = useAppSelector((state) => state.authors)
   const [authorName, setAuthorName] = useState('')
   const [duration, setDuration] = useState(0)
@@ -64,7 +63,7 @@ function useBottomContainer() {
     const newAuthor: NewAuthor = {
       name: authorName,
     }
-    addAuthor(newAuthor, dispatch)
+    dispatch(addAuthor(newAuthor))
   }
 
   const renderAddAuthor = () => {
@@ -89,6 +88,12 @@ function useBottomContainer() {
     )
   }
 
+  const getDuration = () => {
+    if (duration === 0) {
+      return ''
+    }
+    return String(duration)
+  }
   const renderDuration = () => {
     return (
       <div>
@@ -100,6 +105,7 @@ function useBottomContainer() {
           type={'text'}
           inputName={'duration'}
           onValueChange={onDurationChange}
+          value={getDuration()}
           placeholderText={'Enter duration in minutes...'}
         />
         <p>{'Duration:'}</p>
@@ -136,7 +142,15 @@ function useBottomContainer() {
     )
   }
 
-  useEffect(() => {}, [courseAuthor])
+  useEffect(() => {
+    if (courseDetails) {
+      const arr = authors.filter((author) =>
+        courseDetails.authors.includes(author.id)
+      )
+      setCourseAuthor([...arr])
+      setDuration(courseDetails.duration)
+    }
+  }, [])
 
   return {
     authorName,
